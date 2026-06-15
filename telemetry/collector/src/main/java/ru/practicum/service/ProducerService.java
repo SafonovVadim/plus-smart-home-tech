@@ -41,7 +41,7 @@ public class ProducerService {
         HubEventAvro avro = new HubEventAvro();
 
         avro.setHubId(event.getHubId());
-        avro.setTimestamp(event.getTimestamp() != null ? event.getTimestamp().toEpochMilli() : System.currentTimeMillis());
+        avro.setTimestamp(event.getTimestamp());
 
         switch (event) {
             case DeviceAddedEvent e -> {
@@ -83,7 +83,7 @@ public class ProducerService {
 
         avro.setId(event.getId());
         avro.setHubId(event.getHubId());
-        avro.setTimestamp(event.getTimestamp() != null ? event.getTimestamp().toEpochMilli() : System.currentTimeMillis());
+        avro.setTimestamp(event.getTimestamp());
 
         switch (event) {
             case ClimateSensorEvent e -> {
@@ -115,6 +115,7 @@ public class ProducerService {
                 TemperatureSensorAvro payload = new TemperatureSensorAvro();
                 payload.setId(e.getId());
                 payload.setHubId(e.getHubId());
+                payload.setTimestamp(e.getTimestamp());
                 payload.setTemperatureC(e.getTemperatureC());
                 payload.setTemperatureF(e.getTemperatureF());
                 avro.setPayload(payload);

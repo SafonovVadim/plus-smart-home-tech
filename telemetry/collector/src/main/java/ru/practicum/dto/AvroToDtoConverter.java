@@ -140,7 +140,7 @@ public class AvroToDtoConverter {
         ClimateSensorEvent event = new ClimateSensorEvent();
         event.setId(avro.getId());
         event.setHubId(avro.getHubId());
-        event.setTimestamp(Instant.ofEpochMilli(avro.getTimestamp()));
+        event.setTimestamp(avro.getTimestamp());
         event.setTemperatureC(payload.getTemperatureC());
         event.setHumidity(payload.getHumidity());
         event.setCo2Level(payload.getCo2Level());
@@ -151,7 +151,7 @@ public class AvroToDtoConverter {
         LightSensorEvent event = new LightSensorEvent();
         event.setId(avro.getId());
         event.setHubId(avro.getHubId());
-        event.setTimestamp(Instant.ofEpochMilli(avro.getTimestamp()));
+        event.setTimestamp(avro.getTimestamp());
         event.setLinkQuality(payload.getLinkQuality());
         event.setLuminosity(payload.getLuminosity());
         return event;
@@ -161,7 +161,7 @@ public class AvroToDtoConverter {
         MotionSensorEvent event = new MotionSensorEvent();
         event.setId(avro.getId());
         event.setHubId(avro.getHubId());
-        event.setTimestamp(Instant.ofEpochMilli(avro.getTimestamp()));
+        event.setTimestamp(avro.getTimestamp());
         event.setLinkQuality(payload.getLinkQuality());
         event.setMotion(payload.getMotion());
         event.setVoltage(payload.getVoltage());
@@ -172,7 +172,7 @@ public class AvroToDtoConverter {
         SwitchSensorEvent event = new SwitchSensorEvent();
         event.setId(avro.getId());
         event.setHubId(avro.getHubId());
-        event.setTimestamp(Instant.ofEpochMilli(avro.getTimestamp()));
+        event.setTimestamp(avro.getTimestamp());
         event.setState(payload.getState());
         return event;
     }
@@ -181,7 +181,7 @@ public class AvroToDtoConverter {
         TemperatureSensorEvent event = new TemperatureSensorEvent();
         event.setId(avro.getId());
         event.setHubId(avro.getHubId());
-        event.setTimestamp(Instant.ofEpochMilli(avro.getTimestamp()));
+        event.setTimestamp(avro.getTimestamp());
         event.setTemperatureC(payload.getTemperatureC());
         event.setTemperatureF(payload.getTemperatureF());
         return event;

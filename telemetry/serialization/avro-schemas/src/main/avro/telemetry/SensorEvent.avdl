@@ -24,7 +24,8 @@ protocol SensorEventProtocol {
     record TemperatureSensorAvro {
         string id;
         string hubId;
-       long @logicalType("timestamp-millis") timestamp;
+        @logicalType("timestamp-millis")
+        long timestamp;
         int temperature_c;
         int temperature_f;
     }
@@ -32,8 +33,10 @@ protocol SensorEventProtocol {
     record SensorEventAvro {
         string id;
         string hubId;
-       long @logicalType("timestamp-millis") timestamp;
+        @logicalType("timestamp-millis")
+        long timestamp;
         union {
+            null,
             ClimateSensorAvro,
             LightSensorAvro,
             MotionSensorAvro,
