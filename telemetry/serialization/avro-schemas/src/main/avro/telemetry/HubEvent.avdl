@@ -67,7 +67,6 @@ protocol HubEventProtocol {
         @logicalType("timestamp-millis")
         long timestamp;
         union {
-            null,
             DeviceAddedEventAvro,
             DeviceRemovedEventAvro,
             ScenarioAddedEventAvro,

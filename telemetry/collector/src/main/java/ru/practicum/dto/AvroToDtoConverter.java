@@ -39,7 +39,6 @@ public class AvroToDtoConverter {
 
     private static DeviceAddedEvent toDeviceAddedEvent(DeviceAddedEventAvro avro) {
         DeviceAddedEvent event = new DeviceAddedEvent();
-        event.setHubId(avro.getId());
         event.setId(avro.getId());
         event.setDeviceType(toSDeviceType(avro.getType()));
         return event;
@@ -47,7 +46,6 @@ public class AvroToDtoConverter {
 
     private static DeviceRemovedEvent toDeviceRemovedEvent(DeviceRemovedEventAvro avro) {
         DeviceRemovedEvent event = new DeviceRemovedEvent();
-        event.setHubId(avro.getId());
         event.setId(avro.getId());
         return event;
     }
@@ -66,7 +64,6 @@ public class AvroToDtoConverter {
 
     private static ScenarioRemovedEvent toScenarioRemovedEvent(ScenarioRemovedEventAvro avro) {
         ScenarioRemovedEvent event = new ScenarioRemovedEvent();
-        event.setHubId(avro.getName());
         event.setName(avro.getName());
         return event;
     }
@@ -104,17 +101,6 @@ public class AvroToDtoConverter {
 
         action.setValue(avro.getValue() instanceof Integer i ? i : null);
         return action;
-    }
-
-    private static ActionEnum toActionEnum(ActionTypeAvro avro) {
-        String typeStr = avro.toString();
-        return switch (typeStr) {
-            case "ACTIVATE" -> ActionEnum.ACTIVATE;
-            case "DEACTIVATE" -> ActionEnum.DEACTIVATE;
-            case "INVERSE" -> ActionEnum.INVERSE;
-            case "SET_VALUE" -> ActionEnum.SET_VALUE;
-            default -> throw new IllegalArgumentException("Неизвестный тип действия: " + typeStr);
-        };
     }
 
     public static SensorEvent toSensorEvent(SensorEventAvro avro) {

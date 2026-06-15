@@ -36,7 +36,6 @@ protocol SensorEventProtocol {
         @logicalType("timestamp-millis")
         long timestamp;
         union {
-            null,
             ClimateSensorAvro,
             LightSensorAvro,
             MotionSensorAvro,
