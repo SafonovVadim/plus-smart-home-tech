@@ -15,7 +15,6 @@ import ru.practicum.models.scenarios.ScenarioRemovedEvent;
 import ru.practicum.models.sensors.*;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
-import java.time.Instant;
 import java.util.stream.Collectors;
 
 public class AvroToDtoConverter {

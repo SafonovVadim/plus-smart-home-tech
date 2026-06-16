@@ -1,6 +1,7 @@
 package ru.practicum.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import ru.yandex.practicum.kafka.telemetry.event.*;
 import static ru.practicum.models.Topics.HUB_TOPIC;
 import static ru.practicum.models.Topics.SENSOR_TOPIC;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProducerService {
@@ -71,8 +73,7 @@ public class ProducerService {
                 payload.setName(e.getName());
                 avro.setPayload(payload);
             }
-            default -> {
-            }
+            default -> log.error("Неизвестный тип события: {}", event);
         }
 
         return avro;
@@ -120,8 +121,7 @@ public class ProducerService {
                 payload.setTemperatureF(e.getTemperatureF());
                 avro.setPayload(payload);
             }
-            default -> {
-            }
+            default -> log.error("Неизвестный тип события: {}", event);
         }
 
         return avro;

@@ -23,7 +23,6 @@ public class GeneralAvroSerializer implements Serializer<SpecificRecordBase> {
                 BinaryEncoder encoder = encoderFactory.binaryEncoder(out, null);
                 try {
                     writer.write(data, encoder);
-                    encoder.flush();
                 } finally {
                     encoder.flush();
                 }

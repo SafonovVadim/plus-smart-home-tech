@@ -20,7 +20,7 @@ public class KafkaClientConfig {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     @Bean
-    KafkaClient getClient() {
+    public KafkaClient getClient() {
         return new KafkaClient() {
 
             private Consumer<String, SpecificRecordBase> consumer;
