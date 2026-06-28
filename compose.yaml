@@ -34,25 +34,13 @@ services:
                              --bootstrap-server kafka:29092'"
     init: true
 
-  spring-app:
-    build:
-      context: ./telemetry/collector
-      dockerfile: Dockerfile
-    container_name: spring-app
-    ports:
-      - "59091:59091"
-    depends_on:
-      - kafka
-    environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-
   grpc-server:
     build:
       context: ./grpc-server
       dockerfile: Dockerfile
     container_name: grpc-server
     ports:
-      - "9090:9090"
+      - "59091:59091"
     depends_on:
       - kafka
     environment:
