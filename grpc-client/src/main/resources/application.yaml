@@ -1,0 +1,9 @@
+grpc:
+  client:
+    collector:
+      address: 'static://localhost:59091'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+server:
+  port: 9091
