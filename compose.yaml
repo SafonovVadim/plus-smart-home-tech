@@ -40,7 +40,19 @@ services:
       dockerfile: Dockerfile
     container_name: spring-app
     ports:
-      - "8080:8080"
+      - "59091:59091"
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+  grpc-server:
+    build:
+      context: ./grpc-server
+      dockerfile: Dockerfile
+    container_name: grpc-server
+    ports:
+      - "9090:9090"
     depends_on:
       - kafka
     environment:
