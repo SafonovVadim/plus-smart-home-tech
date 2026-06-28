@@ -3,13 +3,15 @@ package ru.yandex.practicum.handler.sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import ru.practicum.models.SensorEvent;
+import ru.practicum.models.sensors.LightSensorEvent;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 
 @Component
 public class LightSensorHandler implements SensorEventHandler {
 
     @Autowired
-    private KafkaTemplate<String, ru.yandex.practicum.SensorEvent> kafkaTemplate;
+    private KafkaTemplate<String, SensorEvent> kafkaTemplate;
 
     @Override
     public SensorEventProto.PayloadCase getMessageType() {
