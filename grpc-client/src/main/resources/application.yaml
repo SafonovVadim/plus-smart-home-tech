@@ -1,12 +1,7 @@
 grpc:
   client:
-#    echo:
-#      address: 'static://127.0.0.1:59091'
-#      enableKeepAlive: true
-#      keepAliveWithoutCalls: true
-#      negotiationType: plaintext
-    collector:
-      address: 'static://localhost:59091'
+    echo:
+      address: 'static://127.0.0.1:59091'
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext

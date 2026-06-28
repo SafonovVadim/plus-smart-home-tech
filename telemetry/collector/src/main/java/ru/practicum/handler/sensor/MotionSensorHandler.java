@@ -1,4 +1,4 @@
-package ru.yandex.practicum.handler.sensor;
+package ru.practicum.handler.sensor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

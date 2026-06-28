@@ -38,21 +38,9 @@ services:
     build:
       context: ./telemetry/collector
       dockerfile: Dockerfile
-    container_name: collector_app
+    container_name: spring-app
     ports:
       - "8080:8080"
-    depends_on:
-      - kafka
-    environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-
-  grpc-server:
-    build:
-      context: ./grpc-server
-      dockerfile: Dockerfile
-    container_name: grpc-server
-    ports:
-      - "59091:59091"
     depends_on:
       - kafka
     environment:
