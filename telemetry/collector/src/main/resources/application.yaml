@@ -1,3 +1,19 @@
 grpc:
   server:
     port: 59091
+# telemetry/collector/src/main/resources/application.yml
+spring:
+  kafka:
+    consumer:
+      properties:
+        spring.json.value.deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: ru.practicum,ru.yandex.practicum
+        # 👇 Добавь это:
+        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value.deserializer: org.springframework.kafka.support.serializer.ProtobufDeserializer
+        spring:
+          kafka:
+                      serializer:
+                        value:
+                          deserializer:
+                            class: org.springframework.kafka.support.serializer.ProtobufDeserializer

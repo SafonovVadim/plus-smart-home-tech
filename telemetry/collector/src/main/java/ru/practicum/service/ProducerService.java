@@ -30,53 +30,53 @@ public class ProducerService {
     private KafkaClient kafkaClient;
 
     public void sendHubEvent(HubEvent event) {
-        HubEventAvro avro = convertToHubEventAvro(event);
+       // HubEventAvro avro = convertToHubEventAvro(event);
       //  kafkaClient.send(getTopicByEventType(event), event.getHubId(), avro);
     }
 
     public void sendSensorEvent(SensorEvent event) {
-        SensorEventAvro avro = convertToSensorEventAvro(event);
+       // SensorEventAvro avro = convertToSensorEventAvro(event);
       //  kafkaClient.send(getTopicByEventType(event), event.getHubId(), avro);
     }
 
     private HubEventAvro convertToHubEventAvro(HubEvent event) {
-        HubEventAvro avro = new HubEventAvro();
+//        HubEventAvro avro = new HubEventAvro();
+//
+//        avro.setHubId(event.getHubId());
+//        avro.setTimestamp(event.getTimestamp());
+//
+//        switch (event) {
+//            case DeviceAddedEvent e -> {
+//                DeviceAddedEventAvro payload = new DeviceAddedEventAvro();
+//                payload.setId(e.getId());
+//                payload.setType(DeviceTypeAvro.valueOf(e.getDeviceType().name()));
+//                avro.setPayload(payload);
+//            }
+//            case DeviceRemovedEvent e -> {
+//                DeviceRemovedEventAvro payload = new DeviceRemovedEventAvro();
+//                payload.setId(e.getId());
+//                avro.setPayload(payload);
+//            }
+//            case ScenarioAddedEvent e -> {
+//                ScenarioAddedEventAvro payload = new ScenarioAddedEventAvro();
+//                payload.setName(e.getName());
+//                payload.setConditions(e.getConditions().stream()
+//                        .map(this::convertToScenarioConditionAvro)
+//                        .toList());
+//                payload.setActions(e.getActions().stream()
+//                        .map(this::convertToDeviceActionAvro)
+//                        .toList());
+//                avro.setPayload(payload);
+//            }
+//            case ScenarioRemovedEvent e -> {
+//                ScenarioRemovedEventAvro payload = new ScenarioRemovedEventAvro();
+//                payload.setName(e.getName());
+//                avro.setPayload(payload);
+//            }
+//            default -> log.error("Неизвестный тип события: {}", event);
+//        }
 
-        avro.setHubId(event.getHubId());
-        avro.setTimestamp(event.getTimestamp());
-
-        switch (event) {
-            case DeviceAddedEvent e -> {
-                DeviceAddedEventAvro payload = new DeviceAddedEventAvro();
-                payload.setId(e.getId());
-                payload.setType(DeviceTypeAvro.valueOf(e.getDeviceType().name()));
-                avro.setPayload(payload);
-            }
-            case DeviceRemovedEvent e -> {
-                DeviceRemovedEventAvro payload = new DeviceRemovedEventAvro();
-                payload.setId(e.getId());
-                avro.setPayload(payload);
-            }
-            case ScenarioAddedEvent e -> {
-                ScenarioAddedEventAvro payload = new ScenarioAddedEventAvro();
-                payload.setName(e.getName());
-                payload.setConditions(e.getConditions().stream()
-                        .map(this::convertToScenarioConditionAvro)
-                        .toList());
-                payload.setActions(e.getActions().stream()
-                        .map(this::convertToDeviceActionAvro)
-                        .toList());
-                avro.setPayload(payload);
-            }
-            case ScenarioRemovedEvent e -> {
-                ScenarioRemovedEventAvro payload = new ScenarioRemovedEventAvro();
-                payload.setName(e.getName());
-                avro.setPayload(payload);
-            }
-            default -> log.error("Неизвестный тип события: {}", event);
-        }
-
-        return avro;
+        return null;
     }
 
     private SensorEventAvro convertToSensorEventAvro(SensorEvent event) {
@@ -127,25 +127,25 @@ public class ProducerService {
         return avro;
     }
 
-    private ScenarioConditionAvro convertToScenarioConditionAvro(ScenarioCondition cond) {
-        ScenarioConditionAvro avro = new ScenarioConditionAvro();
-        avro.setSensorId(cond.getSensorId());
+//    private ScenarioConditionAvro convertToScenarioConditionAvro(ScenarioCondition cond) {
+////        ScenarioConditionAvro avro = new ScenarioConditionAvro();
+////        avro.setSensorId(cond.getSensorId());
+////
+////        String typeStr = cond.getType().name();
+////        avro.setType(ConditionTypeAvro.valueOf(typeStr));
+////
+////        avro.setOperation(ConditionOperationAvro.valueOf(cond.getOperation().name()));
+////        avro.setValue(cond.getValue());
+////        return avro;
+//    }
 
-        String typeStr = cond.getType().name();
-        avro.setType(ConditionTypeAvro.valueOf(typeStr));
-
-        avro.setOperation(ConditionOperationAvro.valueOf(cond.getOperation().name()));
-        avro.setValue(cond.getValue());
-        return avro;
-    }
-
-    private DeviceActionAvro convertToDeviceActionAvro(DeviceAction action) {
-        DeviceActionAvro avro = new DeviceActionAvro();
-        avro.setSensorId(action.getSensorId());
-        avro.setType(ActionTypeAvro.valueOf(action.getType().name()));
-        avro.setValue(action.getValue());
-        return avro;
-    }
+//    private DeviceActionAvro convertToDeviceActionAvro(DeviceAction action) {
+////        DeviceActionAvro avro = new DeviceActionAvro();
+////        avro.setSensorId(action.getSensorId());
+////        avro.setType(ActionTypeAvro.valueOf(action.getType().name()));
+////        avro.setValue(action.getValue());
+////        return avro;
+//    }
 
     private byte[] serialize(SpecificRecordBase record) {
         return new GeneralAvroSerializer().serialize("", record);

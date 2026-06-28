@@ -1,4 +1,3 @@
-// telemetry/collector/src/main/java/ru/practicum/kafka/KafkaClientConfig.java
 package ru.practicum.kafka;
 
 import org.apache.kafka.clients.consumer.Consumer;
@@ -8,8 +7,6 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
-import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +39,8 @@ public class KafkaClientConfig {
                 Properties config = new Properties();
                 config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
                 config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-                config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ByteArrayDeserializer.class);
+                config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ProtobufDeserializer.class);
+                config.put("protobuf.message.class", "ru.yandex.practicum.grpc.telemetry.event.HubEventProto");
                 config.put(ConsumerConfig.GROUP_ID_CONFIG, "grpc-consumer-" + counter.getAndIncrement());
                 consumer = new KafkaConsumer<>(config);
             }
@@ -59,7 +57,7 @@ public class KafkaClientConfig {
                 Properties config = new Properties();
                 config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
                 config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-                config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class);
+                config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ProtobufSerializer.class);
                 producer = new KafkaProducer<>(config);
             }
 
