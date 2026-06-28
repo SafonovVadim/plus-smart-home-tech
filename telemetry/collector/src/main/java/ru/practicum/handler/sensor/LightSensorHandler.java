@@ -20,6 +20,6 @@ public class LightSensorHandler implements SensorEventHandler {
     @Override
     public void handle(SensorEventProto event) {
 
-        kafkaClient.send("telemetry.sensors.v1", event.getHubId(), event.toByteArray());
+        kafkaClient.send("telemetry.sensors.v1", event.getId(), event.toByteArray());
     }
 }

@@ -23,8 +23,7 @@ public class EventDataProducer {
 
     // 🎲 Стартовые данные для симуляции — можно заменить на реальные данные
     private final SensorEventProto templateEvent = SensorEventProto.newBuilder()
-            .setId("device-123")
-            .setHubId("hub-1")
+            .setId("hub-1")
             .setTimestamp(Timestamp.newBuilder()
                     .setSeconds(Instant.now().getEpochSecond())
                     .setNanos(Instant.now().getNano()))
@@ -40,7 +39,7 @@ public class EventDataProducer {
     public void sendEvent(SensorEventProto event) {
         try {
             log.info("Отправляю данные: type={}, hubId={}, id={}",
-                    event.getPayloadCase().name(), event.getHubId(), event.getId());
+                    event.getPayloadCase().name(), event.getId());
             Empty response = collectorStub.collectSensorEvent(event);
             log.info("✅ Получил ответ от коллектора: {}", response);
         } catch (Exception e) {

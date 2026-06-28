@@ -39,8 +39,7 @@ public class EventController extends CollectorControllerGrpc.CollectorController
     public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
         try {
             log.info("Получено событие от устройства:");
-            log.info("  id = {}", request.getId());
-            log.info("  hubId = {}", request.getHubId());
+            log.info("  hubId = {}", request.getId());
             log.info("  timestamp = {}", request.getTimestamp());
             log.info("  payloadCase = {}", request.getPayloadCase());
 
@@ -57,8 +56,8 @@ public class EventController extends CollectorControllerGrpc.CollectorController
             responseObserver.onNext(Empty.newBuilder().build());
             responseObserver.onCompleted();
         } catch (Exception e) {
-            log.error("Ошибка при обработке события от устройства: hubId={}, id={}",
-                    request.getHubId(), request.getId(), e);
+            log.error("Ошибка при обработке события от устройства: hubId={}",
+                    request.getId(), e);
             responseObserver.onError(new StatusRuntimeException(Status.fromThrowable(e)));
         }
     }
