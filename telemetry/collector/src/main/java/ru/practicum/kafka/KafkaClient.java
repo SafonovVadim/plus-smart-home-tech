@@ -6,11 +6,11 @@ import org.apache.kafka.clients.producer.Producer;
 
 
 public interface KafkaClient {
-    Producer<String, SpecificRecordBase> getProducer();
+    Producer<String, byte[]> getProducer();
 
-    Consumer<String, SpecificRecordBase> getConsumer();
+    Consumer<String, byte[]> getConsumer();
 
-    void send(String topic, String key, SpecificRecordBase value);
+    void send(String topic, String key, byte[] value);
 
     void stop();
 }

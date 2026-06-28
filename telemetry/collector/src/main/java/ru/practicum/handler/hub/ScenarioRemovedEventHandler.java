@@ -1,15 +1,17 @@
+// telemetry/collector/src/main/java/ru/practicum/handler/hub/ScenarioRemovedEventHandler.java
 package ru.practicum.handler.hub;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.practicum.kafka.KafkaClient;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.ScenarioRemovedEventProto;
 
 @Service
 public class ScenarioRemovedEventHandler implements HubEventHandler {
 
     @Autowired
-    private KafkaTemplate<String, ru.practicum.models.HubEvent> kafkaTemplate;
+    private KafkaClient kafkaClient;
 
     @Override
     public HubEventProto.PayloadCase getPayloadCase() {
@@ -18,11 +20,6 @@ public class ScenarioRemovedEventHandler implements HubEventHandler {
 
     @Override
     public void handle(HubEventProto request) {
-        ru.practicum.models.scenarios.ScenarioRemovedEvent event = new ru.practicum.models.scenarios.ScenarioRemovedEvent();
-        event.setHubId(request.getHubId());
-        event.setName(request.getScenarioRemoved().getName());
-        event.setTimestamp(event.getTimestamp());
-
-        kafkaTemplate.send("telemetry.hubs.v1", event.getHubId(), event);
+        kafkaClient.send("telemetry.hubs.v1", request.getHubId(), request.toByteArray());
     }
 }

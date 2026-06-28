@@ -1,14 +1,14 @@
-//package ru.yandex.practicum.service;
-//
-//import net.devh.boot.grpc.client.inject.GrpcClient;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.scheduling.annotation.Scheduled;
-//import org.springframework.stereotype.Service;
-//import ru.yandex.practicum.grpc.echo.EchoRequest;
-//import ru.yandex.practicum.grpc.echo.EchoResponse;
-//import ru.yandex.practicum.grpc.echo.EchoServiceGrpc;
-//
+package ru.yandex.practicum.service;
+
+import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import ru.yandex.practicum.grpc.echo.EchoRequest;
+import ru.yandex.practicum.grpc.echo.EchoResponse;
+import ru.yandex.practicum.grpc.echo.EchoServiceGrpc;
+
 //@Service
 //public class EchoSender {
 //    private final Logger log = LoggerFactory.getLogger(getClass());

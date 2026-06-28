@@ -1,16 +1,16 @@
 package ru.practicum.handler.hub;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.practicum.kafka.KafkaClient;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
-
+import ru.yandex.practicum.grpc.telemetry.event.DeviceRemovedEventProto;
 
 @Service
 public class DeviceRemovedEventHandler implements HubEventHandler {
 
     @Autowired
-    private KafkaTemplate<String, ru.practicum.models.HubEvent> kafkaTemplate;
+    private KafkaClient kafkaClient;
 
     @Override
     public HubEventProto.PayloadCase getPayloadCase() {
@@ -19,11 +19,7 @@ public class DeviceRemovedEventHandler implements HubEventHandler {
 
     @Override
     public void handle(HubEventProto request) {
-        ru.practicum.models.devices.DeviceRemovedEvent event = new ru.practicum.models.devices.DeviceRemovedEvent();
-        event.setHubId(request.getHubId());
-        event.setId(request.getDeviceRemoved().getId());
-        event.setTimestamp(toInstant(request.getTimestamp()));
 
-        kafkaTemplate.send("telemetry.hubs.v1", event.getHubId(), event);
+        kafkaClient.send("telemetry.hubs.v1", request.getHubId(), request.toByteArray());
     }
 }

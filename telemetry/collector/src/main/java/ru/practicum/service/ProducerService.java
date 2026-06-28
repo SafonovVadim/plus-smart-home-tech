@@ -31,12 +31,12 @@ public class ProducerService {
 
     public void sendHubEvent(HubEvent event) {
         HubEventAvro avro = convertToHubEventAvro(event);
-        kafkaClient.send(getTopicByEventType(event), event.getHubId(), avro);
+      //  kafkaClient.send(getTopicByEventType(event), event.getHubId(), avro);
     }
 
     public void sendSensorEvent(SensorEvent event) {
         SensorEventAvro avro = convertToSensorEventAvro(event);
-        kafkaClient.send(getTopicByEventType(event), event.getHubId(), avro);
+      //  kafkaClient.send(getTopicByEventType(event), event.getHubId(), avro);
     }
 
     private HubEventAvro convertToHubEventAvro(HubEvent event) {

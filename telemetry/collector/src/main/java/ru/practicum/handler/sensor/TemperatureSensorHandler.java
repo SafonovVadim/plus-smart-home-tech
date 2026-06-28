@@ -1,17 +1,16 @@
 package ru.practicum.handler.sensor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import ru.practicum.models.SensorEvent;
-import ru.practicum.models.sensors.TemperatureSensorEvent;
+import ru.practicum.kafka.KafkaClient;
 import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.TemperatureSensorProto;
 
 @Component
 public class TemperatureSensorHandler implements SensorEventHandler {
 
     @Autowired
-    private KafkaTemplate<String, SensorEvent> kafkaTemplate;
+    private KafkaClient kafkaClient;
 
     @Override
     public SensorEventProto.PayloadCase getMessageType() {
@@ -20,13 +19,7 @@ public class TemperatureSensorHandler implements SensorEventHandler {
 
     @Override
     public void handle(SensorEventProto event) {
-        TemperatureSensorEvent sensorEvent = new TemperatureSensorEvent();
-        sensorEvent.setId(event.getId());
-        sensorEvent.setHubId(event.getHubId());
-        sensorEvent.setTimestamp(toInstant(event.getTimestamp()));
-        sensorEvent.setTemperatureC(event.getTemperatureSensor().getTemperatureC());
-        sensorEvent.setTemperatureF(event.getTemperatureSensor().getTemperatureF());
 
-        kafkaTemplate.send("telemetry.sensors.v1", sensorEvent.getHubId(), sensorEvent);
+        kafkaClient.send("telemetry.sensors.v1", event.getHubId(), event.toByteArray());
     }
 }
