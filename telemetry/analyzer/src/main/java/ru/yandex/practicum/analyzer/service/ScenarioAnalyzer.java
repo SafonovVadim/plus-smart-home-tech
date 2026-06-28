@@ -1,4 +1,4 @@
-package ru.yandex.practicum.service;
+package ru.yandex.practicum.analyzer.service;
 
 import com.google.protobuf.Timestamp;
 import lombok.RequiredArgsConstructor;

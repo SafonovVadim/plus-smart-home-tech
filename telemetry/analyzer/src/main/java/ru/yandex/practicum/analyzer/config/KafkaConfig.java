@@ -1,4 +1,4 @@
-package ru.yandex.practicum.config;
+package ru.yandex.practicum.analyzer.config;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.avro.specific.SpecificRecordBase;
@@ -8,8 +8,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import ru.yandex.practicum.analyzer.kafka.deserializer.HubEventDeserializer;
-import ru.yandex.practicum.analyzer.kafka.deserializer.SensorsSnapshotDeserializer;
+import ru.yandex.practicum.analyzer.deserializer.HubEventDeserializer;
+import ru.yandex.practicum.analyzer.deserializer.SensorsSnapshotDeserializer;
 
 import java.util.Properties;
 
