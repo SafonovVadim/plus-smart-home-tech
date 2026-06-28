@@ -39,7 +39,7 @@ public class EventController extends CollectorControllerGrpc.CollectorController
     public void collectSensorEvent(SensorEventProto request, StreamObserver<Empty> responseObserver) {
         try {
             log.info("Получено событие от устройства:");
-            log.info("  hubId = {}", request.getId());
+            log.info("  hubId = {}", request.getHubId());
             log.info("  timestamp = {}", request.getTimestamp());
             log.info("  payloadCase = {}", request.getPayloadCase());
 
