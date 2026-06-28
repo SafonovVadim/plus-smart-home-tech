@@ -81,7 +81,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>ru.practicum.CollectorApp</mainClass>
+                    <mainClass>ru.yandex.practicum.CollectorApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
