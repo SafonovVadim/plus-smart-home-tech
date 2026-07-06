@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: config-server
+    port: 8888
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations:
+            - classpath:config/telemetry/{application}
+            - classpath:config/telemetry/{application}/kafka
