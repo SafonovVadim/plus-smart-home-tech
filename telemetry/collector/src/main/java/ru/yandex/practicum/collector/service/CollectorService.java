@@ -24,10 +24,10 @@ public class CollectorService {
 
     private final KafkaProducer<String, byte[]> kafkaProducer;
 
-    @Value("${kafka.topic.sensors}")
+    @Value("${kafka.topics.sensors}")
     private String sensorsTopic;
 
-    @Value("${kafka.topic.hubs}")
+    @Value("${kafka.topics.hubs}")
     private String hubsTopic;
 
     public void processSensorEvent(SensorEventProto event) {
