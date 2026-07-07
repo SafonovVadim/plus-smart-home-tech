@@ -16,6 +16,24 @@ services:
       KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
       KAFKA_LISTENERS: 'PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092'
       CLUSTER_ID: 'K0EA9p0yEe6MkAAAAkKsEg'
+  postgres:
+    image: postgres:16.1
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: smart_home
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 
   kafka-init-topics:
     image: confluentinc/confluent-local:7.4.3
@@ -34,14 +52,76 @@ services:
                              --bootstrap-server kafka:29092'"
     init: true
 
+  eureka-server:
+    build:
+      context: ./infra/discovery-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+
+
+  config-server:
+    build:
+      context: ./infra/config-server
+      dockerfile: Dockerfile
+    container_name: config-server
+    depends_on:
+      - eureka-server
+
+
   spring-app:
     build:
       context: ./telemetry/collector
       dockerfile: Dockerfile
     container_name: spring-app
-    ports:
-      - "8080:8080"
     depends_on:
       - kafka
+      - config-server
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+
+  analyzer:
+    build:
+      context: ./telemetry/analyzer
+      dockerfile: Dockerfile
+    container_name: analyzer
+    depends_on:
+      config-server:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+    environment:
+      SPRING_APPLICATION_NAME: aggregator
+      SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "true"
+      SPRING_CLOUD_CONFIG_DISCOVERY_SERVICE_ID: config-server
+      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+
+
+  aggregator:
+    build:
+      context: ./telemetry/aggregator
+      dockerfile: Dockerfile
+    container_name: aggregator
+    depends_on:
+      config-server:
+        condition: service_started
+      eureka-server:
+        condition: service_started
+      kafka:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: aggregator
+      SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "true"
+      SPRING_CLOUD_CONFIG_DISCOVERY_SERVICE_ID: config-server
+      EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eureka-server:8761/eureka/
+      EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
+      EUREKA_CLIENT_FETCH_REGISTRY: "true"
+
+volumes:
+  postgres_data:
