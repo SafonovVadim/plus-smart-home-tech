@@ -1,15 +1,10 @@
-cloud:
-  config:
-    fail-fast: true
-    retry:
-      useRandomPolicy: true
-      max-interval: 6000
 aggregator:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: ru.yandex.practicum.kafka.serializer.GeneralAvroSerializer
+      retries: 0
     consumer:
       group-id: aggregator-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -19,5 +14,6 @@ aggregator:
     topics:
       input: telemetry.sensors.v1
       output: telemetry.snapshots.v1
+
 main:
   allow-bean-definition-overriding: true
