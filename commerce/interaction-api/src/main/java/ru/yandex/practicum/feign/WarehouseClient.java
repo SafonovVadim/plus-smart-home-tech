@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.shopping_cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.shopping_cart.ShoppingCartDto;
+import ru.yandex.practicum.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.warehouse.AddressDto;
 import ru.yandex.practicum.warehouse.BookedProductsDto;
 import ru.yandex.practicum.warehouse.NewProductInWarehouseRequest;
@@ -22,7 +23,7 @@ public interface WarehouseClient {
     BookedProductsDto checkProduct(@RequestBody ShoppingCartDto shoppingCartDto);
 
     @PostMapping("/add")
-    void addProduct(@RequestBody ChangeProductQuantityRequest request);
+    void addProduct(@RequestBody AddProductToWarehouseRequest request);
 
     @GetMapping("/address")
     AddressDto getAddress();

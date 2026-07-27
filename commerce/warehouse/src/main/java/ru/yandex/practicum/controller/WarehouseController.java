@@ -1,13 +1,12 @@
 package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.feign.WarehouseClient;
 import ru.yandex.practicum.service.WarehouseService;
-import ru.yandex.practicum.shopping_cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.shopping_cart.ShoppingCartDto;
+import ru.yandex.practicum.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.warehouse.AddressDto;
 import ru.yandex.practicum.warehouse.BookedProductsDto;
 import ru.yandex.practicum.warehouse.NewProductInWarehouseRequest;
@@ -30,7 +29,7 @@ public class WarehouseController implements WarehouseClient {
     }
 
     @Override
-    public void addProduct(ChangeProductQuantityRequest request) {
+    public void addProduct(AddProductToWarehouseRequest request) {
         warehouseService.addProductToWarehouse(request);
     }
 

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.entity.WarehouseProduct;
 import ru.yandex.practicum.repository.WarehouseRepository;
-import ru.yandex.practicum.shopping_cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.shopping_cart.ShoppingCartDto;
+import ru.yandex.practicum.warehouse.AddProductToWarehouseRequest;
 import ru.yandex.practicum.warehouse.AddressDto;
 import ru.yandex.practicum.warehouse.BookedProductsDto;
 import ru.yandex.practicum.warehouse.NewProductInWarehouseRequest;
@@ -61,14 +61,14 @@ public class WarehouseService {
     }
 
     @Transactional
-    public void addProductToWarehouse(ChangeProductQuantityRequest request) {
+    public void addProductToWarehouse(AddProductToWarehouseRequest request) {
         WarehouseProduct product = warehouseRepository.findById(request.getProductId())
                 .orElseThrow(() -> new RuntimeException("Товар не найден на складе: " + request.getProductId()));
 
-        product.setQuantity(product.getQuantity() + request.getNewQuantity());
+        product.setQuantity(product.getQuantity() + request.getQuantity());
         warehouseRepository.save(product);
         log.info("Товар добавлен на склад: productId={}, added={}, total={}",
-                request.getProductId(), request.getNewQuantity(), product.getQuantity());
+                request.getProductId(), request.getQuantity(), product.getQuantity());
     }
 
     @Transactional(readOnly = true)
