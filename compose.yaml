@@ -4,18 +4,32 @@ services:
     hostname: kafka
     container_name: kafka
     ports:
-      - "9092:9092" # for client connections
+      - "9092:9092" # for client connections (external)
       - "9101:9101" # JMX
     restart: unless-stopped
     environment:
       KAFKA_NODE_ID: 1
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:29093"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      CLUSTER_ID: K0EA9p0yEe6MkAAAAkKsEg
       KAFKA_JMX_PORT: 9101
       KAFKA_JMX_HOSTNAME: localhost
-      KAFKA_PROCESS_ROLES: 'broker,controller'
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
-      KAFKA_LISTENERS: 'PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092'
-      CLUSTER_ID: 'K0EA9p0yEe6MkAAAAkKsEg'
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics --bootstrap-server localhost:29092 --list || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
   postgres:
     image: postgres:16.1
     container_name: postgres
@@ -27,29 +41,31 @@ services:
       POSTGRES_PASSWORD: postgres
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-
   kafka-init-topics:
     image: confluentinc/confluent-local:7.4.3
     container_name: kafka-init-topics
     depends_on:
-      - kafka
-    command: "bash -c \
-                'kafka-topics --create --topic telemetry.sensors.v1 \
-                             --partitions 1 --replication-factor 1 --if-not-exists \
-                             --bootstrap-server kafka:29092 && \
-                kafka-topics --create --topic telemetry.snapshots.v1 \
-                             --partitions 1 --replication-factor 1 --if-not-exists \
-                             --bootstrap-server kafka:29092 && \
-                kafka-topics --create --topic telemetry.hubs.v1 \
-                             --partitions 1 --replication-factor 1 --if-not-exists \
-                             --bootstrap-server kafka:29092'"
+      kafka:
+        condition: service_healthy  # ← ждём, пока Kafka будет "здоров"
+    command: |
+      bash -c "
+        kafka-topics --create --topic telemetry.sensors.v1 \
+                     --partitions 1 --replication-factor 1 --if-not-exists \
+                     --bootstrap-server kafka:29092 && \
+        kafka-topics --create --topic telemetry.snapshots.v1 \
+                     --partitions 1 --replication-factor 1 --if-not-exists \
+                     --bootstrap-server kafka:29092 && \
+        kafka-topics --create --topic telemetry.hubs.v1 \
+                     --partitions 1 --replication-factor 1 --if-not-exists \
+                     --bootstrap-server kafka:29092
+      "
     init: true
 
   eureka-server:
@@ -60,7 +76,6 @@ services:
     ports:
       - "8761:8761"
 
-
   config-server:
     build:
       context: ./infra/config-server
@@ -68,7 +83,8 @@ services:
     container_name: config-server
     depends_on:
       - eureka-server
-
+    environment:
+      SPRING_CLOUD_CONFIG_SERVER_GIT_URI: file:///config-repo  # ← уточните путь, если нужно
 
   spring-app:
     build:
@@ -80,7 +96,7 @@ services:
       - config-server
     environment:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-
+      SPRING_PROFILES_ACTIVE: docker
 
   analyzer:
     build:
@@ -88,10 +104,8 @@ services:
       dockerfile: Dockerfile
     container_name: analyzer
     depends_on:
-      config-server:
-        condition: service_started
-      eureka-server:
-        condition: service_started
+      - config-server
+      - eureka-server
     environment:
       SPRING_APPLICATION_NAME: aggregator
       SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "true"
@@ -99,7 +113,7 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eureka-server:8761/eureka/
       EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
       EUREKA_CLIENT_FETCH_REGISTRY: "true"
-
+      SPRING_PROFILES_ACTIVE: docker
 
   aggregator:
     build:
@@ -107,14 +121,10 @@ services:
       dockerfile: Dockerfile
     container_name: aggregator
     depends_on:
-      config-server:
-        condition: service_started
-      eureka-server:
-        condition: service_started
-      kafka:
-        condition: service_started
-      postgres:
-        condition: service_healthy
+      - config-server
+      - eureka-server
+      - kafka
+      - postgres
     environment:
       SPRING_APPLICATION_NAME: aggregator
       SPRING_CLOUD_CONFIG_DISCOVERY_ENABLED: "true"
@@ -122,6 +132,10 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULT_ZONE: http://eureka-server:8761/eureka/
       EUREKA_CLIENT_REGISTER_WITH_EUREKA: "true"
       EUREKA_CLIENT_FETCH_REGISTRY: "true"
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/smart_home
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: docker
 
 volumes:
   postgres_data:
