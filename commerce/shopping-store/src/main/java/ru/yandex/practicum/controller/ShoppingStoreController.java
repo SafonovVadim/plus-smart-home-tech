@@ -8,6 +8,7 @@ import ru.yandex.practicum.service.ShoppingStoreService;
 import ru.yandex.practicum.shopping_cart.ChangeProductQuantityRequest;
 
 import ru.yandex.practicum.shopping_store.ProductDto;
+import ru.yandex.practicum.shopping_store.QuantityState;
 import ru.yandex.practicum.shopping_store.SetProductQuantityStateRequest;
 
 import java.util.UUID;
@@ -39,7 +40,11 @@ public class ShoppingStoreController implements ShoppingStoreClient {
     }
 
     @Override
-    public boolean changeState(SetProductQuantityStateRequest request) {
+    public boolean changeState(UUID productId,
+                               String quantityState) {
+        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest();
+        request.setProductId(productId);
+        request.setQuantityState(QuantityState.valueOf(quantityState));
         return shoppingStoreService.setProductQuantityState(request);
     }
 

@@ -24,10 +24,11 @@ public interface ShoppingStoreClient {
     ProductDto updateProduct(@RequestBody ProductDto product);
 
     @PostMapping("/removeProductFromStore")
-    boolean removeProductFromStore(@RequestParam UUID productId);
+    boolean removeProductFromStore(@RequestBody UUID productId);
 
     @PostMapping("/quantityState")
-    boolean changeState(@RequestBody SetProductQuantityStateRequest request);
+    boolean changeState(@RequestParam UUID productId,
+                        @RequestParam String quantityState);
 
     @GetMapping("/{productId}")
     ProductDto getProduct(@PathVariable UUID productId);
