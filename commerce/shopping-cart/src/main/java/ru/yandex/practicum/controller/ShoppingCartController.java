@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @RestController()
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/shopping-cart")
 public class ShoppingCartController implements ShoppingCartClient {
     private final ShoppingCartService shoppingCartService;
 

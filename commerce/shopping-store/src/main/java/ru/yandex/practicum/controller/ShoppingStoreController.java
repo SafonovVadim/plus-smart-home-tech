@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @RestController()
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/shopping-store")
 public class ShoppingStoreController implements ShoppingStoreClient {
     private final ShoppingStoreService shoppingStoreService;
 

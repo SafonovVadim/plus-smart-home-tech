@@ -2,6 +2,7 @@ package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.feign.WarehouseClient;
 import ru.yandex.practicum.service.WarehouseService;
@@ -13,6 +14,7 @@ import ru.yandex.practicum.warehouse.NewProductInWarehouseRequest;
 
 @RestController()
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/warehouse")
 public class WarehouseController implements WarehouseClient {
 
     private final WarehouseService warehouseService;
