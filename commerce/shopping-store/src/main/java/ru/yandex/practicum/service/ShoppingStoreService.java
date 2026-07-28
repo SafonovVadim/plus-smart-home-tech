@@ -133,7 +133,7 @@ public class ShoppingStoreService {
         Product product = shoppingStoreRepository.findById(request.getProductId())
                 .orElseThrow(() -> new RuntimeException("Товар не найден: " + request.getProductId()));
 
-        product.setQuantityState(request.getQuantityState());
+        product.setQuantityState(QuantityState.valueOf(request.getQuantityState()));
         log.info("Изменено количество товара {}: {}", request.getProductId(), request.getQuantityState());
         return true;
     }
