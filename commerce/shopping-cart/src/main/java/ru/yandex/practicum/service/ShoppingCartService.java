@@ -75,7 +75,6 @@ public class ShoppingCartService {
             }
         }
 
-        cart = cartRepository.save(cart);
         log.info("Товары добавлены в корзину пользователя {}", username);
         return toDto(cart);
     }
@@ -90,7 +89,6 @@ public class ShoppingCartService {
                 .orElseThrow(() -> new RuntimeException("Корзина не найдена для пользователя: " + username));
 
         cart.setState("DEACTIVATE");
-        cartRepository.save(cart);
         log.info("Корзина пользователя {} деактивирована", username);
     }
 
@@ -112,9 +110,8 @@ public class ShoppingCartService {
         }
 
         cart.getCartProducts().removeIf(cp -> productIds.contains(cp.getProductId()));
-        Cart savedCart = cartRepository.save(cart);
         log.info("Товары удалены из корзины пользователя {}", username);
-        return toDto(savedCart);
+        return toDto(cart);
     }
 
     @Transactional
@@ -132,10 +129,9 @@ public class ShoppingCartService {
                 .orElseThrow(() -> new RuntimeException("Товар не найден в корзине: " + request.getProductId()));
 
         product.setQuantity(request.getNewQuantity());
-        Cart savedCart = cartRepository.save(cart);
         log.info("Изменено количество товара {} в корзине пользователя {}: {}",
                 request.getProductId(), username, request.getNewQuantity());
-        return toDto(savedCart);
+        return toDto(cart);
     }
 
     private Cart getOrCreateCart(String username) {

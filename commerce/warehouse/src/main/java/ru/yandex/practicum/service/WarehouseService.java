@@ -66,7 +66,6 @@ public class WarehouseService {
                 .orElseThrow(() -> new RuntimeException("Товар не найден на складе: " + request.getProductId()));
 
         product.setQuantity(product.getQuantity() + request.getQuantity());
-        warehouseRepository.save(product);
         log.info("Товар добавлен на склад: productId={}, added={}, total={}",
                 request.getProductId(), request.getQuantity(), product.getQuantity());
     }
@@ -112,5 +111,4 @@ public class WarehouseService {
                 .fragile(hasFragile)
                 .build();
     }
-
 }

@@ -40,11 +40,7 @@ public class ShoppingStoreController implements ShoppingStoreClient {
     }
 
     @Override
-    public boolean changeState(UUID productId,
-                               String quantityState) {
-        SetProductQuantityStateRequest request = new SetProductQuantityStateRequest();
-        request.setProductId(productId);
-        request.setQuantityState(QuantityState.valueOf(quantityState));
+    public boolean changeState(SetProductQuantityStateRequest request) {
         return shoppingStoreService.setProductQuantityState(request);
     }
 

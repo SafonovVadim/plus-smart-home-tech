@@ -8,14 +8,14 @@ import ru.yandex.practicum.shopping_store.SetProductQuantityStateRequest;
 
 import java.util.UUID;
 
-@FeignClient(name = "shopping-store",path = "/api/v1/shopping-store",configuration = FeignConfig.class)
+@FeignClient(name = "shopping-store", path = "/api/v1/shopping-store", configuration = FeignConfig.class)
 public interface ShoppingStoreClient {
 
     @GetMapping()
     Page<ProductDto> getProductByCategory(@RequestParam String category,
-                              @RequestParam(defaultValue = "0") int page,
-                              @RequestParam(defaultValue = "20") int size,
-                              @RequestParam(required = false) String sort);
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "20") int size,
+                                          @RequestParam(required = false) String sort);
 
     @PutMapping()
     ProductDto addNewProduct(@RequestBody ProductDto product);
@@ -27,8 +27,7 @@ public interface ShoppingStoreClient {
     boolean removeProductFromStore(@RequestBody UUID productId);
 
     @PostMapping("/quantityState")
-    boolean changeState(@RequestParam UUID productId,
-                        @RequestParam String quantityState);
+    boolean changeState(@ModelAttribute SetProductQuantityStateRequest request);
 
     @GetMapping("/{productId}")
     ProductDto getProduct(@PathVariable UUID productId);
