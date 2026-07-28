@@ -13,7 +13,7 @@ import ru.yandex.practicum.warehouse.AddressDto;
 import ru.yandex.practicum.warehouse.BookedProductsDto;
 import ru.yandex.practicum.warehouse.NewProductInWarehouseRequest;
 
-@FeignClient(name = "warehouse", path = "/api/v1/warehouse", configuration = FeignConfig.class)
+@FeignClient(name = "warehouse", path = "/api/v1/warehouse", configuration = FeignConfig.class, fallback = WarehouseClientFallback.class)
 public interface WarehouseClient {
 
     @PutMapping()
