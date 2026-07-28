@@ -98,6 +98,7 @@ public class ShoppingStoreService {
                 .quantityState(productDto.getQuantityState() != null ? productDto.getQuantityState() : QuantityState.MANY)
                 .productState(productDto.getProductState() != null ? productDto.getProductState() : ProductState.ACTIVE)
                 .build();
+        product = shoppingStoreRepository.save(product);
         log.info("Добавлен новый товар: {}", product.getProductId());
         return toDto(product);
     }
