@@ -30,19 +30,17 @@ public class ShoppingStoreService {
     public Page<ProductDto> getProducts(String category, int page, int size, String sort) {
         Pageable pageable = PageRequest.of(page, size, parseSort(sort));
 
-        Page<Product> products;
+        Page<Product> products = Page.empty();
+        ;
         if (category != null && !category.isEmpty()) {
             try {
                 ProductCategory productCategory = ProductCategory.valueOf(category.toUpperCase());
-                products = shoppingStoreRepository.findByProductStateAndProductCategory(ProductState.ACTIVE, productCategory, pageable);
+                products = shoppingStoreRepository.findByProductCategory(productCategory, pageable);
             } catch (IllegalArgumentException e) {
                 log.error("Неизвестная категория: {}", category);
                 products = Page.empty();
             }
-        } else {
-            products = shoppingStoreRepository.findByProductState(ProductState.ACTIVE, pageable);
         }
-
         return products.map(ProductMapper::toDto);
     }
 
