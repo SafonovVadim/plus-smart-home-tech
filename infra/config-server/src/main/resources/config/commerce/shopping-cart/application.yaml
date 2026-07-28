@@ -31,11 +31,11 @@ resilience4j:
         automatic-transition-from-open-to-half-open-enabled: true
     instances:
       warehouse:
-        baseConfig: reference
+        baseConfig: default
   timelimiter:
     configs:
       default:
         timeout-duration: 3s
     instances:
       warehouse:
-        baseConfig: reference
+        baseConfig: default
