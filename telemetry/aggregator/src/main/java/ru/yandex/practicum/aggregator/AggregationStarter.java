@@ -9,6 +9,7 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.WakeupException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorStateAvro;
@@ -27,8 +28,10 @@ public class AggregationStarter {
 
     private final Consumer<String, SpecificRecordBase> consumer;
     private final Producer<String, SpecificRecordBase> producer;
-    private final String inputTopic = "telemetry.sensors.v1";
-    private final String outputTopic = "telemetry.snapshots.v1";
+    @Value("${aggregator.kafka.topics.input}")
+    private String inputTopic;
+    @Value("${aggregator.kafka.topics.output}")
+    private String outputTopic;
 
     private final Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
 

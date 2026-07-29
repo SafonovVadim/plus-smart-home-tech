@@ -9,8 +9,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.analyzer.entity.*;
-import ru.yandex.practicum.analyzer.repository.*;
+import ru.yandex.practicum.analyzer.entity.Action;
+import ru.yandex.practicum.analyzer.entity.Condition;
+import ru.yandex.practicum.analyzer.entity.Scenario;
+import ru.yandex.practicum.analyzer.entity.Sensor;
+import ru.yandex.practicum.analyzer.repository.ScenarioRepository;
+import ru.yandex.practicum.analyzer.repository.SensorRepository;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 
 import java.time.Duration;
