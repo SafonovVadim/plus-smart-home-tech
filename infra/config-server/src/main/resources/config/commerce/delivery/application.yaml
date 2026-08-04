@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/smart_home
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  main:
+    allow-bean-definition-overriding: true
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: delivery
+    show-sql: true
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+delivery:
+  base-cost: 5.0
+  address1-multiplier: 1.0
+  address2-multiplier: 2.0
+  fragile-multiplier: 0.2
+  weight-cost: 0.3
+  volume-cost: 0.2
+  street-mismatch-multiplier: 0.2

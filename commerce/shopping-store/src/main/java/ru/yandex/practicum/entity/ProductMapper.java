@@ -1,9 +1,11 @@
 package ru.yandex.practicum.entity;
 
+import ru.yandex.practicum.shopping_store.ProductDto;
+
 public class ProductMapper {
 
-    public static ru.yandex.practicum.shopping_store.ProductDto toDto(Product product) {
-        return ru.yandex.practicum.shopping_store.ProductDto.builder()
+    public static ProductDto toDto(Product product) {
+        return ProductDto.builder()
                 .productId(product.getProductId())
                 .productName(product.getProductName())
                 .description(product.getDescription())

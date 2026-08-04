@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: payment
+  config:
+    import: "configserver:"
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: config-server
+      fail-fast: false
+      retry:
+        useRandomPolicy: true
+        max-interval: 6000
+
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://eureka-server:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 0

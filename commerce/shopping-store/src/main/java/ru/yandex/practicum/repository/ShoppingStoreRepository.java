@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.yandex.practicum.entity.Product;
 import ru.yandex.practicum.shopping_store.ProductCategory;
-import ru.yandex.practicum.shopping_store.ProductState;
 
 import java.util.UUID;
 
