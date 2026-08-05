@@ -6,10 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.feign.WarehouseClient;
 import ru.yandex.practicum.service.WarehouseService;
 import ru.yandex.practicum.shopping_cart.ShoppingCartDto;
-import ru.yandex.practicum.warehouse.AddProductToWarehouseRequest;
-import ru.yandex.practicum.warehouse.AddressDto;
-import ru.yandex.practicum.warehouse.BookedProductsDto;
-import ru.yandex.practicum.warehouse.NewProductInWarehouseRequest;
+import ru.yandex.practicum.warehouse.*;
 
 @RestController()
 @RequiredArgsConstructor
@@ -36,5 +33,20 @@ public class WarehouseController implements WarehouseClient {
     @Override
     public AddressDto getAddress() {
         return warehouseService.getAddress();
+    }
+
+    @Override
+    public void shippedToDelivery(ShippedToDeliveryRequest request) {
+        warehouseService.shippedToDelivery(request);
+    }
+
+    @Override
+    public void acceptReturn(ReturnProductsRequest request) {
+        warehouseService.acceptReturn(request);
+    }
+
+    @Override
+    public BookedProductsDto assemblyProductsForOrder(AssemblyProductsForOrderRequest request) {
+        return warehouseService.assemblyProductsForOrder(request);
     }
 }

@@ -1,7 +1,8 @@
 package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.feign.ShoppingCartClient;
 import ru.yandex.practicum.service.ShoppingCartService;
 import ru.yandex.practicum.shopping_cart.ChangeProductQuantityRequest;

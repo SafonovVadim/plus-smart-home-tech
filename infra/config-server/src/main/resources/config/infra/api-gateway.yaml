@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        - id: order-service
+          uri: lb://order
+          predicates:
+            - Path=/api/v1/order/**
+          filters:
+            - StripPrefix=1
+
+        - id: payment-service
+          uri: lb://payment
+          predicates:
+            - Path=/api/v1/payment/**
+          filters:
+            - StripPrefix=1
+
+        - id: delivery-service
+          uri: lb://delivery
+          predicates:
+            - Path=/api/v1/delivery/**
+          filters:
+            - StripPrefix=1

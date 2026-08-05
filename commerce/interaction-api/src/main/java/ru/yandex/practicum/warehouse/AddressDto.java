@@ -6,20 +6,20 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AddressDto{
+public class AddressDto {
 
-	@JsonProperty("country")
-	private String country;
+    @JsonProperty("country")
+    private String country;
 
-	@JsonProperty("city")
-	private String city;
+    @JsonProperty("city")
+    private String city;
 
-	@JsonProperty("street")
-	private String street;
+    @JsonProperty("street")
+    private String street;
 
-	@JsonProperty("flat")
-	private String flat;
+    @JsonProperty("flat")
+    private String flat;
 
-	@JsonProperty("house")
-	private String house;
+    @JsonProperty("house")
+    private String house;
 }
