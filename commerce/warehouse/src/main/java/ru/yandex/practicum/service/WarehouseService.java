@@ -111,7 +111,6 @@ public class WarehouseService {
                 .build();
     }
 
-    @Transactional
     public BookedProductsDto assemblyProductsForOrder(AssemblyProductsForOrderRequest assemblyProductsForOrderRequest) {
         double totalWeight = 0;
         double totalVolume = 0;
@@ -156,7 +155,6 @@ public class WarehouseService {
                 .build();
     }
 
-    @Transactional
     public void shippedToDelivery(ShippedToDeliveryRequest shippedToDeliveryDto) {
         orderBookingRepository.findByOrderId(shippedToDeliveryDto.getOrderId())
                 .forEach(booking -> {
@@ -177,7 +175,6 @@ public class WarehouseService {
                     .orElseThrow(() -> new RuntimeException("Товар не найден: " + productId));
 
             product.setQuantity(product.getQuantity() + quantity.intValue());
-            warehouseRepository.save(product);
 
             log.info("Товар возвращен на склад: productId={}, количество={}, всего={}",
                     productId, quantity, product.getQuantity());

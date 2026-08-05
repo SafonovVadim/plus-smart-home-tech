@@ -69,7 +69,6 @@ public class DeliveryService {
         return deliveryDto;
     }
 
-    @Transactional
     public void deliveryPicked(UUID orderId) {
         Delivery delivery = deliveryRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Доставка не найдена для заказа: " + orderId));
@@ -89,7 +88,6 @@ public class DeliveryService {
         log.info("Доставка принята в доставку: {}, статус заказа обновлен на ASSEMBLED", delivery.getDeliveryId());
     }
 
-    @Transactional
     public void deliverySuccessful(UUID orderId) {
         Delivery delivery = deliveryRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Доставка не найдена для заказа: " + orderId));
@@ -105,7 +103,6 @@ public class DeliveryService {
         log.info("Доставка успешна: {}, статус заказа обновлен на DELIVERED", delivery.getDeliveryId());
     }
 
-    @Transactional
     public void deliveryFailed(UUID orderId) {
         Delivery delivery = deliveryRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Доставка не найдена для заказа: " + orderId));

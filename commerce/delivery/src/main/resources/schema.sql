@@ -2,8 +2,8 @@ CREATE SCHEMA IF NOT EXISTS delivery;
 
 CREATE TABLE IF NOT EXISTS delivery.deliveries
 (
-    delivery_id     UUID PRIMARY KEY,
-    order_id        UUID    NOT NULL,
+    order_id        UUID PRIMARY KEY,
+    delivery_id     UUID    NOT NULL,
     from_address    JSONB   NOT NULL,
     to_address      JSONB   NOT NULL,
     delivery_weight DOUBLE PRECISION,

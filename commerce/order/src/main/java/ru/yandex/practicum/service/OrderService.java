@@ -48,7 +48,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public OrderDto createNewOrder(CreateNewOrderRequest request) {
         Order order = new Order();
         order.setOrderId(UUID.randomUUID());
@@ -76,7 +75,6 @@ public class OrderService {
         warehouseService.acceptReturn(ReturnProductsRequest.builder().returnProducts(request.getProducts()).build());
 
         order.setState(OrderState.PRODUCT_RETURNED);
-        orderRepository.save(order);
 
         log.info("Возврат заказа: {}", order.getOrderId());
         return toDto(order);
@@ -89,7 +87,6 @@ public class OrderService {
         paymentClient.payment(toDto(order));
 
         order.setState(OrderState.PAID);
-        orderRepository.save(order);
 
         log.info("Оплата заказа: {}", orderId);
         return toDto(order);
@@ -103,7 +100,6 @@ public class OrderService {
         paymentClient.paymentFailed(UUID.fromString(orderId));
 
         order.setState(OrderState.PAYMENT_FAILED);
-        orderRepository.save(order);
 
         log.info("Ошибка оплаты заказа: {}", orderId);
         return toDto(order);
@@ -117,7 +113,6 @@ public class OrderService {
         deliveryClient.deliverySuccessful(UUID.fromString(orderId));
 
         order.setState(OrderState.DELIVERED);
-        orderRepository.save(order);
 
         log.info("Доставка заказа: {}", orderId);
         return toDto(order);
@@ -131,7 +126,6 @@ public class OrderService {
         deliveryClient.deliveryFailed(UUID.fromString(orderId));
 
         order.setState(OrderState.DELIVERY_FAILED);
-        orderRepository.save(order);
 
         log.info("Ошибка доставки заказа: {}", orderId);
         return toDto(order);
@@ -143,7 +137,6 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Заказ не найден: " + orderId));
 
         order.setState(OrderState.COMPLETED);
-        orderRepository.save(order);
 
         log.info("Заказ завершен: {}", orderId);
         return toDto(order);
@@ -157,7 +150,6 @@ public class OrderService {
         Double totalCost = paymentClient.getTotalCost(orderDto);
 
         order.setTotalPrice(totalCost);
-        orderRepository.save(order);
 
         log.info("Расчёт итоговой стоимости заказа: {}, total={}", orderId, totalCost);
         return toDto(order);
@@ -172,7 +164,6 @@ public class OrderService {
         Double cost = deliveryClient.deliveryCost(orderDto);
 
         order.setDeliveryPrice(cost);
-        orderRepository.save(order);
 
         log.info("Расчёт стоимости доставки заказа: {}, cost={}", orderId, cost);
         return toDto(order);
@@ -196,7 +187,6 @@ public class OrderService {
         order.setDeliveryVolume(booked.getDeliveryVolume());
         order.setFragile(booked.getFragile());
         order.setState(OrderState.ASSEMBLED);
-        orderRepository.save(order);
 
         log.info("Сборка заказа: {}, вес={}, объем={}, хрупкий={}",
                 orderId, booked.getDeliveryWeight(), booked.getDeliveryVolume(), booked.getFragile());
@@ -209,7 +199,6 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Заказ не найден: " + orderId));
 
         order.setState(OrderState.ASSEMBLY_FAILED);
-        orderRepository.save(order);
 
         log.info("Ошибка сборки заказа: {}", orderId);
         return toDto(order);
